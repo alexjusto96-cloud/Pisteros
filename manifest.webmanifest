@@ -1,16 +1,17 @@
 
 {
+  "id": "/Pisteros/",
   "name": "Pisteros F.C.",
   "short_name": "Pisteros",
   "description": "Aplicación de valoraciones de Pisteros F.C.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/Pisteros/index.html",
+  "scope": "/Pisteros/",
   "display": "standalone",
   "background_color": "#F4F6F9",
   "theme_color": "#0038A8",
   "icons": [
     {
-      "src": "pisteros-logo.jpg",
+      "src": "/Pisteros/pisteros-logo.jpg",
       "sizes": "any",
       "type": "image/jpeg",
       "purpose": "any"
