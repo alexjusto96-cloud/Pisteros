@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Menú Principal - Pisteros F.C.</title>
+  
+  <meta name="theme-color" content="#0038A8">
+  <link rel="icon" type="image/png" href="https://i.ibb.co/vzP3kYk/pisteros-logo.png">
+
+  <style>
+    /* VARIABLES DE COLOR - PISTEROS F.C. */
+    :root {
+      --primary-blue: #0038A8;
+      --secondary-blue: #002570;
+      --olive-green: #5C7A4B;
+      --light-green: #EAF2E8;
+      --bg-gray: #F4F6F9;
+      --card-bg: #FFFFFF;
+      --text-main: #1F2937;
+      --text-muted: #6B7280;
+      --error-color: #DC2626;
+      --border-radius: 14px;
+      --box-shadow: 0 10px 25px -5px rgba(0, 56, 168, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-gray);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 600px;
+      padding: 28px 24px;
+      position: relative;
+    }
+
+    .laurel-bar {
+      height: 8px;
+      background: linear-gradient(90deg, var(--olive-green) 0%, #7A9E66 50%, var(--olive-green) 100%);
+      margin: -28px -24px 24px -24px;
+    }
+
+    .header-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--bg-gray);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+
+    .user-welcome {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+
+    .menu-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .menu-card {
+      background: #FAFAFA;
+      border: 1.5px solid #E5E7EB;
+      border-left: 5px solid var(--primary-blue);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-card:active {
+      transform: scale(0.98);
+      background-color: var(--light-green);
+    }
+
+    .menu-card-icon {
+      font-size: 1.5rem;
+    }
+
+    .menu-card-text h3 {
+      color: var(--primary-blue);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .menu-card-text p {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .menu-card.logout-card {
+      border-left-color: var(--error-color);
+      background: #FEF2F2;
+    }
+
+    .menu-card.logout-card h3 {
+      color: var(--error-color);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="laurel-bar"></div>
+
+    <div class="header-nav">
+      <span class="user-welcome">Hola, <span id="userNameDisplay">Jugador</span> 👋</span>
+    </div>
+
+    <h2 style="color: var(--olive-green); font-size: 1.1rem; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Menú Principal</h2>
+
+    <div class="menu-grid">
+      <!-- 1. Valorar Partido -> valorar.html -->
+      <div class="menu-card" style="border-left-color: var(--primary-blue);" onclick="navegarA('valorar.html')">
+        <span class="menu-card-icon">⭐</span>
+        <div class="menu-card-text">
+          <h3>Valorar partido</h3>
+          <p>Puntúa el desempeño del último encuentro</p>
+        </div>
+      </div>
+
+      <!-- 2. Rendimiento del Equipo -> equipo.html -->
+      <div class="menu-card" style="border-left-color: var(--olive-green);" onclick="navegarA('equipo.html')">
+        <span class="menu-card-icon">📊</span>
+        <div class="menu-card-text">
+          <h3>Rendimiento del Equipo</h3>
+          <p>Estadísticas colectivas de la temporada</p>
+        </div>
+      </div>
+
+      <!-- 3. Rendimiento del Jugador -> jugador.html -->
+      <div class="menu-card" style="border-left-color: var(--primary-blue);" onclick="navegarA('jugador.html')">
+        <span class="menu-card-icon">🏃</span>
+        <div class="menu-card-text">
+          <h3>Rendimiento del Jugador</h3>
+          <p>Tus métricas e historial individual</p>
+        </div>
+      </div>
+
+      <!-- 4. Cambiar Contraseña -> password.html -->
+      <div class="menu-card" style="border-left-color: var(--olive-green);" onclick="navegarA('password.html')">
+        <span class="menu-card-icon">🔒</span>
+        <div class="menu-card-text">
+          <h3>Cambiar contraseña</h3>
+          <p>Actualiza tus credenciales de acceso</p>
+        </div>
+      </div>
+
+      <!-- 5. Logout -> index.html -->
+      <div class="menu-card logout-card" onclick="logout()">
+        <span class="menu-card-icon">🚪</span>
+        <div class="menu-card-text">
+          <h3>Logout</h3>
+          <p>Cerrar la sesión actual</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Gestión de Memoria Interna (localStorage)
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedUser = localStorage.getItem('pisteros_user');
+      
+      if (!savedUser) {
+        // Si no hay sesión guardada en la memoria, redirige al Login
+        window.location.href = "index.html";
+      } else {
+        // Muestra el nombre cargado desde la memoria interna
+        document.getElementById('userNameDisplay').textContent = savedUser;
+      }
+    });
+
+    // Navegación entre pestañas manteniendo la memoria interna
+    function navegarA(pagina) {
+      window.location.href = pagina;
+    }
+
+    // Logout: Borra la memoria interna y vuelve al login
+    function logout() {
+      localStorage.removeItem('pisteros_user');
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

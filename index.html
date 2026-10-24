@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pisteros F.C. - Login</title>
+  
+  <!-- Configuración PWA y Tema -->
+  <meta name="theme-color" content="#0038A8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/png" href="https://i.ibb.co/vzP3kYk/pisteros-logo.png">
+
+  <!-- PWA Manifest Dinámico -->
+  <script>
+    const manifestData = {
+      "name": "Pisteros F.C.",
+      "short_name": "Pisteros",
+      "start_url": "./index.html",
+      "display": "standalone",
+      "background_color": "#0038A8",
+      "theme_color": "#0038A8",
+      "icons": [
+        {
+          "src": "https://i.ibb.co/vzP3kYk/pisteros-logo.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "https://i.ibb.co/vzP3kYk/pisteros-logo.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    };
+    const stringManifest = JSON.stringify(manifestData);
+    const blob = new Blob([stringManifest], {type: 'application/json'});
+    const manifestURL = URL.createObjectURL(blob);
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manifestURL;
+    document.head.appendChild(link);
+  </script>
+
+  <style>
+    /* VARIABLES DE COLOR - PISTEROS F.C. */
+    :root {
+      --primary-blue: #0038A8;
+      --secondary-blue: #002570;
+      --olive-green: #5C7A4B;
+      --bg-gray: #F4F6F9;
+      --card-bg: #FFFFFF;
+      --text-main: #1F2937;
+      --error-color: #DC2626;
+      --border-radius: 14px;
+      --box-shadow: 0 10px 25px -5px rgba(0, 56, 168, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-gray);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    /* CONTENEDOR PRINCIPAL TIPO MÓVIL */
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 560px;
+      position: relative;
+      padding: 28px 24px;
+    }
+
+    /* BARRA DE LAUREL DECORATIVA */
+    .laurel-bar {
+      height: 8px;
+      background: linear-gradient(90deg, var(--olive-green) 0%, #7A9E66 50%, var(--olive-green) 100%);
+      margin: -28px -24px 24px -24px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 24px;
+    }
+
+    .club-logo {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+    }
+
+    .app-title {
+      text-align: center;
+      color: var(--primary-blue);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .app-subtitle {
+      text-align: center;
+      color: var(--olive-green);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #E5E7EB;
+      border-radius: 10px;
+      font-size: 1rem;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.2s ease;
+      background-color: #FAFAFA;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-blue);
+      background-color: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.15);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      background-color: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(0, 56, 168, 0.25);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+      background-color: var(--secondary-blue);
+    }
+
+    .btn-primary:disabled {
+      background-color: #9CA3AF;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 14px;
+      font-weight: 600;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="laurel-bar"></div>
+
+    <div class="logo-container">
+      <img src="https://i.ibb.co/vzP3kYk/pisteros-logo.png" 
+           alt="Escudo Pisteros F.C." 
+           class="club-logo"
+           onerror="this.onerror=null; this.src='https://via.placeholder.com/140/0038A8/FFFFFF?text=PISTEROS+F.C.';">
+    </div>
+
+    <h1 class="app-title">Pisteros F.C.</h1>
+    <p class="app-subtitle">Acceso de Jugadores y Plantilla</p>
+
+    <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
+      <div class="form-group">
+        <label for="usuarioInput">Usuario</label>
+        <input type="text" id="usuarioInput" class="form-control" placeholder="Ej. Gonzalo" required autocomplete="username">
+      </div>
+
+      <div class="form-group">
+        <label for="passwordInput">Contraseña</label>
+        <input type="password" id="passwordInput" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+
+      <button type="submit" id="btnLogin" class="btn-primary">
+        Iniciar Sesión
+      </button>
+
+      <div id="loginError" class="error-message"></div>
+    </form>
+  </div>
+
+  <script>
+    // URL DE TU GOOGLE APPS SCRIPT
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
+
+    // Si ya hay sesión iniciada, redirige directamente a menu.html
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedUser = localStorage.getItem('pisteros_user');
+      if (savedUser) {
+        window.location.href = "menu.html";
+      }
+    });
+
+    // Función de Login
+    async function handleLogin() {
+      const usuario = document.getElementById('usuarioInput').value.trim();
+      const password = document.getElementById('passwordInput').value.trim();
+      const btnLogin = document.getElementById('btnLogin');
+      const errorDiv = document.getElementById('loginError');
+
+      if (!usuario || !password) {
+        errorDiv.textContent = "Por favor, completa ambos campos.";
+        return;
+      }
+
+      // Estado de carga
+      btnLogin.disabled = true;
+      btnLogin.textContent = "Verificando...";
+      errorDiv.textContent = "";
+
+      try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+          },
+          body: JSON.stringify({
+            action: 'login',
+            usuario: usuario,
+            password: password
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.status === "success" && data.authenticated) {
+          // Guardar usuario y redirigir a menu.html
+          localStorage.setItem('pisteros_user', data.user);
+          window.location.href = "menu.html";
+        } else {
+          errorDiv.textContent = data.message || "Usuario o contraseña incorrectos.";
+        }
+      } catch (error) {
+        console.error("Error al conectar con la hoja:", error);
+        errorDiv.textContent = "Error de conexión. Inténtalo de nuevo.";
+      } finally {
+        btnLogin.disabled = false;
+        btnLogin.textContent = "Iniciar Sesión";
+      }
+    }
+
+    // Registro del Service Worker PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swCode = `
+          self.addEventListener('install', (e) => self.skipWaiting());
+          self.addEventListener('activate', (e) => self.clients.claim());
+          self.addEventListener('fetch', (e) => {});
+        `;
+        const blob = new Blob([swCode], { type: 'text/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        
+        navigator.serviceWorker.register(swUrl)
+          .then(() => console.log('Service Worker registrado'))
+          .catch(err => console.log('Error SW:', err));
+      });
+    }
+  </script>
+</body>
+</html>
