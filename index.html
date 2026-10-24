@@ -1,314 +1,116 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Pisteros F.C. - Login</title>
-  
-  <!-- Configuración PWA y Tema -->
-  <meta name="theme-color" content="#0038A8">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="icon" type="image/jpeg" href="pisteros-logo.jpg">
-  
-  <!-- PWA Manifest Dinámico -->
-  <script>
-    const manifestData = {
-      "name": "Pisteros F.C.",
-      "short_name": "Pisteros",
-      "start_url": "./index.html",
-      "display": "standalone",
-      "background_color": "#0038A8",
-      "theme_color": "#0038A8",
-      "icons": [
-        {
-          "src": "pisteros-logo.jpg",
-          "sizes": "192x192",
-          "type": "image/png"
-        },
-        {
-          "src": "pisteros-logo.jpg",
-          "sizes": "512x512",
-          "type": "image/png"
-        }
-      ]
-    };
-    const stringManifest = JSON.stringify(manifestData);
-    const blob = new Blob([stringManifest], {type: 'application/json'});
-    const manifestURL = URL.createObjectURL(blob);
-    const link = document.createElement('link');
-    link.rel = 'manifest';
-    link.href = manifestURL;
-    document.head.appendChild(link);
-  </script>
-
-  <style>
-    /* VARIABLES DE COLOR - PISTEROS F.C. */
-    :root {
-      --primary-blue: #0038A8;
-      --secondary-blue: #002570;
-      --olive-green: #5C7A4B;
-      --bg-gray: #F4F6F9;
-      --card-bg: #FFFFFF;
-      --text-main: #1F2937;
-      --error-color: #DC2626;
-      --border-radius: 14px;
-      --box-shadow: 0 10px 25px -5px rgba(0, 56, 168, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg-gray);
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 16px;
-    }
-
-    /* CONTENEDOR PRINCIPAL TIPO MÓVIL */
-    .app-container {
-      width: 100%;
-      max-width: 420px;
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 560px;
-      position: relative;
-      padding: 28px 24px;
-    }
-
-    /* BARRA DE LAUREL DECORATIVA */
-    .laurel-bar {
-      height: 8px;
-      background: linear-gradient(90deg, var(--olive-green) 0%, #7A9E66 50%, var(--olive-green) 100%);
-      margin: -28px -24px 24px -24px;
-    }
-
-    .logo-container {
-      text-align: center;
-      margin-top: 10px;
-      margin-bottom: 24px;
-    }
-
-    .club-logo {
-      width: 140px;
-      height: 140px;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
-    }
-
-    .app-title {
-      text-align: center;
-      color: var(--primary-blue);
-      font-size: 1.5rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
-
-    .app-subtitle {
-      text-align: center;
-      color: var(--olive-green);
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 28px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--primary-blue);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 14px 16px;
-      border: 2px solid #E5E7EB;
-      border-radius: 10px;
-      font-size: 1rem;
-      color: var(--text-main);
-      outline: none;
-      transition: all 0.2s ease;
-      background-color: #FAFAFA;
-    }
-
-    .form-control:focus {
-      border-color: var(--primary-blue);
-      background-color: #FFFFFF;
-      box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.15);
-    }
-
-    .btn-primary {
-      width: 100%;
-      padding: 16px;
-      background-color: var(--primary-blue);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-top: 10px;
-      box-shadow: 0 4px 12px rgba(0, 56, 168, 0.25);
-    }
-
-    .btn-primary:active {
-      transform: scale(0.98);
-      background-color: var(--secondary-blue);
-    }
-
-    .btn-primary:disabled {
-      background-color: #9CA3AF;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .error-message {
-      color: var(--error-color);
-      font-size: 0.85rem;
-      text-align: center;
-      margin-top: 14px;
-      font-weight: 600;
-      min-height: 20px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0038A8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Pisteros F.C. - Login</title>
+<link rel="icon" type="image/jpeg" href="pisteros-logo.jpg">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{--blue:#0038A8;--dark:#002570;--green:#5C7A4B;--gray:#F4F6F9;--red:#DC2626}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+body{min-height:100vh;background:var(--gray);display:flex;align-items:center;justify-content:center;padding:16px;color:#1F2937}
+.app{width:100%;max-width:420px;min-height:560px;background:white;border-radius:14px;overflow:hidden;padding:28px 24px;box-shadow:0 10px 25px rgba(0,56,168,.10)}
+.bar{height:8px;background:linear-gradient(90deg,#5C7A4B,#7A9E66,#5C7A4B);margin:-28px -24px 24px}
+.logo{text-align:center;margin:10px 0 24px}
+.logo img{width:140px;height:140px;object-fit:contain;filter:drop-shadow(0 4px 10px #0002)}
+h1{text-align:center;color:var(--blue);font-size:1.5rem;font-weight:800;text-transform:uppercase;margin-bottom:4px}
+.subtitle{text-align:center;color:var(--green);font-size:.9rem;font-weight:600;margin-bottom:28px}
+.group{margin-bottom:20px}
+.group label{display:block;color:var(--blue);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.field{width:100%;padding:14px 16px;border:2px solid #E5E7EB;border-radius:10px;font-size:1rem;background:#FAFAFA;outline:none}
+.field:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 3px #0038A826}
+.remember{display:flex;align-items:center;gap:10px;margin:0 0 20px}
+.remember input{width:19px;height:19px;accent-color:var(--blue)}
+.remember label{font-size:.9rem;cursor:pointer}
+button{width:100%;padding:16px;background:var(--blue);color:white;border:0;border-radius:10px;font-size:1rem;font-weight:700;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 12px #0038A840}
+button:active{background:var(--dark)}
+button:disabled{background:#9CA3AF;cursor:wait}
+.error{min-height:22px;margin-top:14px;color:var(--red);font-size:.85rem;font-weight:600;text-align:center}
+</style>
 </head>
 <body>
-
-  <div class="app-container">
-    <div class="laurel-bar"></div>
-
-    <div class="logo-container">
-     <img
-  src="pisteros-logo.jpg"
-  alt="Escudo Pisteros F.C."
-  class="club-logo"
->
-    </div>
-
-    <h1 class="app-title">Pisteros F.C.</h1>
-    <p class="app-subtitle">Acceso de Jugadores y Plantilla</p>
-
-    <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
-      <div class="form-group">
-        <label for="usuarioInput">Usuario</label>
-        <input type="text" id="usuarioInput" class="form-control" placeholder="Ej. Gonzalo" required autocomplete="username">
-      </div>
-
-      <div class="form-group">
-        <label for="passwordInput">Contraseña</label>
-        <input type="password" id="passwordInput" class="form-control" placeholder="••••••••" required autocomplete="current-password">
-      </div>
-
-      <button type="submit" id="btnLogin" class="btn-primary">
-        Iniciar Sesión
-      </button>
-
-      <div id="loginError" class="error-message"></div>
-    </form>
+<main class="app">
+  <div class="bar"></div>
+  <div class="logo">
+    <img src="pisteros-logo.jpg" alt="Escudo Pisteros F.C.">
   </div>
+  <h1>Pisteros F.C.</h1>
+  <p class="subtitle">Acceso de Jugadores y Plantilla</p>
+  <form id="loginForm">
+    <div class="group">
+      <label for="usuarioInput">Usuario</label>
+      <input class="field" id="usuarioInput" type="text"
+             placeholder="Ej. Gonzalo" autocomplete="username" required>
+    </div>
+    <div class="group">
+      <label for="passwordInput">Contraseña</label>
+      <input class="field" id="passwordInput" type="password"
+             placeholder="••••••••" autocomplete="current-password" required>
+    </div>
+    <div class="remember">
+      <input type="checkbox" id="rememberMe">
+      <label for="rememberMe">Recordarme</label>
+    </div>
+    <button id="btnLogin" type="submit">Iniciar sesión</button>
+    <div class="error" id="loginError" role="alert"></div>
+  </form>
+</main>
 
-  <script>
-    // URL DE TU GOOGLE APPS SCRIPT
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
+<script>
+const API="https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
+const KEY="pisteros_user";
 
-    // Si ya hay sesión iniciada, redirige directamente a menu.html
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedUser = localStorage.getItem('pisteros_user');
-      if (savedUser) {
-        window.location.href = "menu.html";
-      }
+if(sessionStorage.getItem(KEY)||localStorage.getItem(KEY)){
+  location.replace("menu.html");
+}
+
+document.getElementById("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const usuario=document.getElementById("usuarioInput").value.trim();
+  const password=document.getElementById("passwordInput").value;
+  const recordar=document.getElementById("rememberMe").checked;
+  const btn=document.getElementById("btnLogin");
+  const error=document.getElementById("loginError");
+
+  if(!usuario||!password){
+    error.textContent="Completa ambos campos.";
+    return;
+  }
+
+  btn.disabled=true;
+  btn.textContent="Verificando...";
+  error.textContent="";
+
+  try{
+    const res=await fetch(API,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify({action:"login",usuario,password})
     });
+    if(!res.ok)throw new Error("HTTP "+res.status);
+    const data=await res.json();
 
-    // Función de Login
-    async function handleLogin() {
-      // Se respeta la combinación exacta de mayúsculas y minúsculas introducida
-      const usuarioIngresado = document.getElementById('usuarioInput').value.trim();
-      const password = document.getElementById('passwordInput').value.trim();
-      const btnLogin = document.getElementById('btnLogin');
-      const errorDiv = document.getElementById('loginError');
-
-      if (!usuarioIngresado || !password) {
-        errorDiv.textContent = "Por favor, completa ambos campos.";
-        return;
-      }
-
-      // Estado de carga
-      btnLogin.disabled = true;
-      btnLogin.textContent = "Verificando...";
-      errorDiv.textContent = "";
-
-      try {
-        const response = await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8',
-          },
-          body: JSON.stringify({
-            action: 'login',
-            usuario: usuarioIngresado,
-            password: password
-          })
-        });
-
-        const data = await response.json();
-
-        if (data.status === "success" && data.authenticated) {
-          // Guardar usuario en localStorage respetando el formato ingresado y redirigir
-          localStorage.setItem('pisteros_user', data.user || usuarioIngresado);
-          window.location.href = "menu.html";
-        } else {
-          errorDiv.textContent = data.message || "Usuario o contraseña incorrectos.";
-        }
-      } catch (error) {
-        console.error("Error al conectar con la hoja:", error);
-        errorDiv.textContent = "Error de conexión. Inténtalo de nuevo.";
-      } finally {
-        btnLogin.disabled = false;
-        btnLogin.textContent = "Iniciar Sesión";
-      }
+    if(data.status==="success"&&data.authenticated){
+      localStorage.removeItem(KEY);
+      sessionStorage.removeItem(KEY);
+      const store=recordar?localStorage:sessionStorage;
+      store.setItem(KEY,data.user||usuario);
+      location.replace("menu.html");
+    }else{
+      error.textContent=data.message||"Usuario o contraseña incorrectos.";
     }
-
-    // Registro del Service Worker PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        const swCode = `
-          self.addEventListener('install', (e) => self.skipWaiting());
-          self.addEventListener('activate', (e) => self.clients.claim());
-          self.addEventListener('fetch', (e) => {});
-        `;
-        const blob = new Blob([swCode], { type: 'text/javascript' });
-        const swUrl = URL.createObjectURL(blob);
-        
-        navigator.serviceWorker.register(swUrl)
-          .then(() => console.log('Service Worker registrado'))
-          .catch(err => console.log('Error SW:', err));
-      });
-    }
-  </script>
+  }catch(err){
+    console.error(err);
+    error.textContent="Error de conexión. Inténtalo de nuevo.";
+  }finally{
+    btn.disabled=false;
+    btn.textContent="Iniciar sesión";
+  }
+});
+</script>
 </body>
 </html>
