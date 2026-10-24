@@ -23,6 +23,8 @@ body{background:var(--gray);color:#1F2937;min-height:100vh;display:flex;align-it
 .grid-header,.table-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center;text-align:center;padding:10px 12px}
 .grid-header{background:var(--blue);color:white;border-radius:8px;font-size:.8rem;font-weight:700;text-transform:uppercase;margin-bottom:8px}
 .table-row{border-bottom:1px solid #E5E7EB;border-radius:6px;margin-bottom:4px;font-size:.9rem}
+.table-row.season-average{background:#EAF2E8;border:1.5px solid var(--green);font-weight:800;margin-bottom:10px;padding:13px 12px}
+.season-average .score{color:var(--green);font-size:1.1rem}
 .score{font-size:1rem;font-weight:800;color:var(--blue)}
 .chart-card{margin-top:20px;background:#FAFAFA;border:1.5px solid #E5E7EB;border-radius:12px;padding:14px}
 .chart-title{color:var(--blue);font-size:.85rem;font-weight:800;text-transform:uppercase;text-align:center;margin-bottom:12px}
@@ -34,39 +36,59 @@ body{background:var(--gray);color:#1F2937;min-height:100vh;display:flex;align-it
 </head>
 <body>
 <main class="app">
-<div class="bar"></div>
-<div class="header">
-  <span class="user">Usuario: <span id="userNameDisplay">--</span></span>
-  <button class="back" onclick="location.href='menu.html'">← Menú</button>
-</div>
-<div class="selector">
-  <label for="playerSelector">Seleccionar Jugador</label>
-  <select id="playerSelector" onchange="cambiarJugador()"></select>
-</div>
-<div id="loading" class="loading"><div class="spinner"></div>Cargando rendimiento individual...</div>
-<div id="dataContainer" style="display:none">
-  <div class="grid-header"><span>Jornada</span><span>Valoración</span></div>
-  <div id="tableBody"></div>
-  <div class="chart-card">
-    <div class="chart-title">Evolución del Rendimiento</div>
-    <div class="chart-area"><canvas id="performanceChart"></canvas></div>
+  <div class="bar"></div>
+  <div class="header">
+    <span class="user">Usuario: <span id="userNameDisplay">--</span></span>
+    <button class="back" onclick="location.href='menu.html'">← Menú</button>
   </div>
-</div>
-<div id="errorMsg" style="text-align:center;color:#DC2626;font-weight:600"></div>
+
+  <div class="selector">
+    <label for="playerSelector">Seleccionar Jugador</label>
+    <select id="playerSelector" onchange="cambiarJugador()"></select>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    Cargando rendimiento individual...
+  </div>
+
+  <div id="dataContainer" style="display:none">
+    <div class="grid-header">
+      <span>Jornada</span>
+      <span>Valoración</span>
+    </div>
+    <div id="tableBody"></div>
+
+    <div class="chart-card">
+      <div class="chart-title">Evolución del Rendimiento</div>
+      <div class="chart-area">
+        <canvas id="performanceChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div id="errorMsg" style="text-align:center;color:#DC2626;font-weight:600"></div>
 </main>
 
 <script>
 const API="https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
-const user=sessionStorage.getItem("pisteros_user")||localStorage.getItem("pisteros_user");
-let chart=null;
 
-if(!user)location.replace("index.html");
-else{
+const user=sessionStorage.getItem("pisteros_user")||
+           localStorage.getItem("pisteros_user");
+
+let chart=null;
+let ultimaSolicitud=0;
+
+if(!user){
+  location.replace("index.html");
+}else{
   document.getElementById("userNameDisplay").textContent=user;
   cargarDatosJugador(user);
 }
 
 async function cargarDatosJugador(jugador){
+  const solicitud=++ultimaSolicitud;
+
   document.getElementById("loading").style.display="block";
   document.getElementById("dataContainer").style.display="none";
   document.getElementById("errorMsg").textContent="";
@@ -75,14 +97,25 @@ async function cargarDatosJugador(jugador){
     const res=await fetch(API,{
       method:"POST",
       headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({action:"getDatosJugador",jugador})
+      body:JSON.stringify({
+        action:"getDatosJugador",
+        jugador:jugador
+      })
     });
-    if(!res.ok)throw new Error("Error HTTP");
+
+    if(!res.ok)throw new Error("Error HTTP "+res.status);
+
     const data=await res.json();
-    if(data.status!=="success")throw new Error(data.message||"Error");
+
+    if(solicitud!==ultimaSolicitud)return;
+
+    if(data.status!=="success"){
+      throw new Error(data.message||"Error");
+    }
 
     const select=document.getElementById("playerSelector");
     select.replaceChildren();
+
     (data.listaJugadores||[]).forEach(nombre=>{
       const opt=document.createElement("option");
       opt.value=nombre;
@@ -91,101 +124,169 @@ async function cargarDatosJugador(jugador){
       select.appendChild(opt);
     });
 
-    renderizarTabla(data.historial||[]);
+    renderizarTabla(
+      data.mediaTemporada,
+      data.historial||[]
+    );
+
     renderizarGrafico(data.historial||[]);
+
     document.getElementById("dataContainer").style.display="block";
+
   }catch(err){
+    if(solicitud!==ultimaSolicitud)return;
+
     console.error(err);
-    document.getElementById("errorMsg").textContent="No se pudieron obtener los datos del jugador.";
+    document.getElementById("errorMsg").textContent=
+      "No se pudieron obtener los datos del jugador.";
+
   }finally{
-    document.getElementById("loading").style.display="none";
+    if(solicitud===ultimaSolicitud){
+      document.getElementById("loading").style.display="none";
+    }
   }
 }
 
-function renderizarTabla(historial){
+function mostrarValoracion(valor){
+  if(valor===null||valor===undefined||String(valor).trim()===""){
+    return "-";
+  }
+
+  if(typeof valor==="number"){
+    return Number.isInteger(valor)
+      ? String(valor)
+      : String(Math.round(valor*100)/100);
+  }
+
+  return String(valor);
+}
+
+function crearFila(etiqueta,valor,esMedia=false){
+  const row=document.createElement("div");
+  row.className=esMedia
+    ? "table-row season-average"
+    : "table-row";
+
+  const nombre=document.createElement("span");
+  nombre.textContent=etiqueta;
+
+  const score=document.createElement("span");
+  score.className="score";
+  score.textContent=mostrarValoracion(valor);
+
+  row.append(nombre,score);
+  return row;
+}
+
+function renderizarTabla(mediaTemporada,historial){
   const table=document.getElementById("tableBody");
   table.replaceChildren();
 
+  // Primera fila: media de toda la temporada.
+  table.appendChild(
+    crearFila("Media temporada",mediaTemporada,true)
+  );
+
   if(!historial.length){
-    const row=document.createElement("div");
-    row.className="table-row";
-    row.textContent="Sin datos";
-    table.appendChild(row);
+    table.appendChild(crearFila("Sin jornadas","-"));
     return;
   }
 
   historial.forEach(item=>{
-    const row=document.createElement("div");
-    row.className="table-row";
-    const jornada=document.createElement("span");
-    jornada.textContent=item.jornada;
-    const score=document.createElement("span");
-    score.className="score";
-    score.textContent=item.valoracion==null||item.valoracion===""?"-":item.valoracion;
-    row.append(jornada,score);
-    table.appendChild(row);
+    table.appendChild(
+      crearFila(item.jornada,item.valoracion)
+    );
   });
 }
 
 function renderizarGrafico(historial){
+  // El backend devuelve las jornadas de más reciente
+  // a más antigua. Invertimos para el gráfico.
   const ordenados=[...historial].reverse();
+
   const labels=[];
   const values=[];
 
   ordenados.forEach(item=>{
-    if(item.valoracion==null||String(item.valoracion).trim()==="")return;
-    const valor=Number(String(item.valoracion).replace(",","."));
+    if(
+      item.valoracion===null||
+      item.valoracion===undefined||
+      String(item.valoracion).trim()===""
+    ){
+      return;
+    }
+
+    const valor=Number(
+      String(item.valoracion).replace(",",".")
+    );
+
     if(Number.isFinite(valor)){
       labels.push(item.jornada);
       values.push(valor);
     }
   });
 
-  if(chart){chart.destroy();chart=null}
+  if(chart){
+    chart.destroy();
+    chart=null;
+  }
+
   if(typeof Chart==="undefined"){
-    document.getElementById("errorMsg").textContent="No se ha podido cargar el gráfico.";
+    document.getElementById("errorMsg").textContent=
+      "No se ha podido cargar el gráfico.";
     return;
   }
 
-  chart=new Chart(document.getElementById("performanceChart"),{
-    type:"line",
-    data:{
-      labels,
-      datasets:[{
-        label:"Puntuación",
-        data:values,
-        borderColor:"#0038A8",
-        backgroundColor:"rgba(0,56,168,.1)",
-        borderWidth:3,
-        pointBackgroundColor:"#5C7A4B",
-        pointBorderColor:"#0038A8",
-        pointRadius:6,
-        pointHoverRadius:8,
-        tension:.3,
-        fill:true
-      }]
-    },
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{
-        y:{
-          min:0,max:3,
-          ticks:{stepSize:1,font:{weight:"bold"}},
-          grid:{color:"#E5E7EB"}
+  chart=new Chart(
+    document.getElementById("performanceChart"),
+    {
+      type:"line",
+      data:{
+        labels:labels,
+        datasets:[{
+          label:"Puntuación",
+          data:values,
+          borderColor:"#0038A8",
+          backgroundColor:"rgba(0,56,168,.1)",
+          borderWidth:3,
+          pointBackgroundColor:"#5C7A4B",
+          pointBorderColor:"#0038A8",
+          pointRadius:6,
+          pointHoverRadius:8,
+          tension:.3,
+          fill:true
+        }]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{
+          legend:{display:false}
         },
-        x:{
-          ticks:{font:{weight:"bold"}},
-          grid:{display:false}
+        scales:{
+          y:{
+            min:0,
+            max:3,
+            ticks:{
+              stepSize:1,
+              font:{weight:"bold"}
+            },
+            grid:{color:"#E5E7EB"}
+          },
+          x:{
+            ticks:{font:{weight:"bold"}},
+            grid:{display:false}
+          }
         }
       }
     }
-  });
+  );
 }
 
 function cambiarJugador(){
-  cargarDatosJugador(document.getElementById("playerSelector").value);
+  cargarDatosJugador(
+    document.getElementById("playerSelector").value
+  );
 }
 </script>
 </body>
