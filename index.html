@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0038A8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="icon" type="image/png" href="https://i.ibb.co/vzP3kYk/pisteros-logo.png">
+  <link rel="icon" type="image/png" href="pisteros-logo.png">
 
   <!-- PWA Manifest Dinámico -->
   <script>
@@ -22,12 +22,12 @@
       "theme_color": "#0038A8",
       "icons": [
         {
-          "src": "https://i.ibb.co/vzP3kYk/pisteros-logo.png",
+          "src": "pisteros-logo.png",
           "sizes": "192x192",
           "type": "image/png"
         },
         {
-          "src": "https://i.ibb.co/vzP3kYk/pisteros-logo.png",
+          "src": "pisteros-logo.png",
           "sizes": "512x512",
           "type": "image/png"
         }
@@ -203,7 +203,7 @@
     <div class="laurel-bar"></div>
 
     <div class="logo-container">
-      <img src="https://i.ibb.co/vzP3kYk/pisteros-logo.png" 
+      <img src="pisteros-logo.png" 
            alt="Escudo Pisteros F.C." 
            class="club-logo"
            onerror="this.onerror=null; this.src='https://via.placeholder.com/140/0038A8/FFFFFF?text=PISTEROS+F.C.';">
@@ -245,12 +245,13 @@
 
     // Función de Login
     async function handleLogin() {
-      const usuario = document.getElementById('usuarioInput').value.trim();
+      // Se respeta la combinación exacta de mayúsculas y minúsculas introducida
+      const usuarioIngresado = document.getElementById('usuarioInput').value.trim();
       const password = document.getElementById('passwordInput').value.trim();
       const btnLogin = document.getElementById('btnLogin');
       const errorDiv = document.getElementById('loginError');
 
-      if (!usuario || !password) {
+      if (!usuarioIngresado || !password) {
         errorDiv.textContent = "Por favor, completa ambos campos.";
         return;
       }
@@ -268,7 +269,7 @@
           },
           body: JSON.stringify({
             action: 'login',
-            usuario: usuario,
+            usuario: usuarioIngresado,
             password: password
           })
         });
@@ -276,8 +277,8 @@
         const data = await response.json();
 
         if (data.status === "success" && data.authenticated) {
-          // Guardar usuario y redirigir a menu.html
-          localStorage.setItem('pisteros_user', data.user);
+          // Guardar usuario en localStorage respetando el formato ingresado y redirigir
+          localStorage.setItem('pisteros_user', data.user || usuarioIngresado);
           window.location.href = "menu.html";
         } else {
           errorDiv.textContent = data.message || "Usuario o contraseña incorrectos.";
