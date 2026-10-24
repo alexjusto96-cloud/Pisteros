@@ -6,111 +6,539 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0038A8">
 <meta name="apple-mobile-web-app-capable" content="yes">
+
 <title>Pisteros F.C. - Login</title>
+
 <link rel="icon" type="image/jpeg" href="pisteros-logo.jpg">
 <link rel="manifest" href="manifest.webmanifest">
+
 <style>
-:root{--blue:#0038A8;--dark:#002570;--green:#5C7A4B;--gray:#F4F6F9;--red:#DC2626}
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-body{min-height:100vh;background:var(--gray);display:flex;align-items:center;justify-content:center;padding:16px;color:#1F2937}
-.app{width:100%;max-width:420px;min-height:560px;background:white;border-radius:14px;overflow:hidden;padding:28px 24px;box-shadow:0 10px 25px rgba(0,56,168,.10)}
-.bar{height:8px;background:linear-gradient(90deg,#5C7A4B,#7A9E66,#5C7A4B);margin:-28px -24px 24px}
-.logo{text-align:center;margin:10px 0 24px}
-.logo img{width:140px;height:140px;object-fit:contain;filter:drop-shadow(0 4px 10px #0002)}
-h1{text-align:center;color:var(--blue);font-size:1.5rem;font-weight:800;text-transform:uppercase;margin-bottom:4px}
-.subtitle{text-align:center;color:var(--green);font-size:.9rem;font-weight:600;margin-bottom:28px}
-.group{margin-bottom:20px}
-.group label{display:block;color:var(--blue);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.field{width:100%;padding:14px 16px;border:2px solid #E5E7EB;border-radius:10px;font-size:1rem;background:#FAFAFA;outline:none}
-.field:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 3px #0038A826}
-.remember{display:flex;align-items:center;gap:10px;margin:0 0 20px}
-.remember input{width:19px;height:19px;accent-color:var(--blue)}
-.remember label{font-size:.9rem;cursor:pointer}
-button{width:100%;padding:16px;background:var(--blue);color:white;border:0;border-radius:10px;font-size:1rem;font-weight:700;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 12px #0038A840}
-button:active{background:var(--dark)}
-button:disabled{background:#9CA3AF;cursor:wait}
-.error{min-height:22px;margin-top:14px;color:var(--red);font-size:.85rem;font-weight:600;text-align:center}
+:root {
+  --blue:#0038A8;
+  --dark:#002570;
+  --green:#5C7A4B;
+  --gray:#F4F6F9;
+  --red:#DC2626;
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Roboto,Arial,sans-serif;
+}
+
+body {
+  min-height:100vh;
+  background:var(--gray);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  color:#1F2937;
+}
+
+.app {
+  width:100%;
+  max-width:420px;
+  min-height:560px;
+  background:white;
+  border-radius:14px;
+  overflow:hidden;
+  padding:28px 24px;
+  box-shadow:0 10px 25px rgba(0,56,168,.10);
+}
+
+.bar {
+  height:8px;
+  background:linear-gradient(
+    90deg,#5C7A4B,#7A9E66,#5C7A4B
+  );
+  margin:-28px -24px 24px;
+}
+
+.logo {
+  text-align:center;
+  margin:10px 0 24px;
+}
+
+.logo img {
+  width:140px;
+  height:140px;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 10px #0002);
+}
+
+h1 {
+  text-align:center;
+  color:var(--blue);
+  font-size:1.5rem;
+  font-weight:800;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+
+.subtitle {
+  text-align:center;
+  color:var(--green);
+  font-size:.9rem;
+  font-weight:600;
+  margin-bottom:28px;
+}
+
+.group {
+  margin-bottom:20px;
+}
+
+.group label {
+  display:block;
+  color:var(--blue);
+  font-size:.85rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:8px;
+}
+
+.field {
+  width:100%;
+  padding:14px 16px;
+  border:2px solid #E5E7EB;
+  border-radius:10px;
+  font-size:1rem;
+  background:#FAFAFA;
+  outline:none;
+}
+
+.field:focus {
+  border-color:var(--blue);
+  background:white;
+  box-shadow:0 0 0 3px #0038A826;
+}
+
+.remember {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0 0 20px;
+}
+
+.remember input {
+  width:19px;
+  height:19px;
+  accent-color:var(--blue);
+  cursor:pointer;
+}
+
+.remember label {
+  font-size:.9rem;
+  cursor:pointer;
+}
+
+button {
+  width:100%;
+  padding:16px;
+  background:var(--blue);
+  color:white;
+  border:0;
+  border-radius:10px;
+  font-size:1rem;
+  font-weight:700;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 4px 12px #0038A840;
+}
+
+button:active {
+  background:var(--dark);
+}
+
+button:disabled {
+  background:#9CA3AF;
+  cursor:wait;
+}
+
+.error {
+  min-height:22px;
+  margin-top:14px;
+  color:var(--red);
+  font-size:.85rem;
+  font-weight:600;
+  text-align:center;
+}
 </style>
 </head>
+
 <body>
+
 <main class="app">
+
   <div class="bar"></div>
+
   <div class="logo">
-    <img src="pisteros-logo.jpg" alt="Escudo Pisteros F.C.">
+    <img
+      src="pisteros-logo.jpg"
+      alt="Escudo Pisteros F.C.">
   </div>
+
   <h1>Pisteros F.C.</h1>
-  <p class="subtitle">Acceso de Jugadores y Plantilla</p>
+
+  <p class="subtitle">
+    Acceso de Jugadores y Plantilla
+  </p>
+
   <form id="loginForm">
+
     <div class="group">
-      <label for="usuarioInput">Usuario</label>
-      <input class="field" id="usuarioInput" type="text"
-             placeholder="Ej. Gonzalo" autocomplete="username" required>
+
+      <label for="usuarioInput">
+        Usuario
+      </label>
+
+      <input
+        class="field"
+        id="usuarioInput"
+        type="text"
+        placeholder="Ej. Gonzalo"
+        autocomplete="username"
+        required>
+
     </div>
+
     <div class="group">
-      <label for="passwordInput">Contraseña</label>
-      <input class="field" id="passwordInput" type="password"
-             placeholder="••••••••" autocomplete="current-password" required>
+
+      <label for="passwordInput">
+        Contraseña
+      </label>
+
+      <input
+        class="field"
+        id="passwordInput"
+        type="password"
+        placeholder="••••••••"
+        autocomplete="current-password"
+        required>
+
     </div>
+
     <div class="remember">
-      <input type="checkbox" id="rememberMe">
-      <label for="rememberMe">Recordarme</label>
+
+      <input
+        type="checkbox"
+        id="rememberMe">
+
+      <label for="rememberMe">
+        Recordarme
+      </label>
+
     </div>
-    <button id="btnLogin" type="submit">Iniciar sesión</button>
-    <div class="error" id="loginError" role="alert"></div>
+
+    <button
+      id="btnLogin"
+      type="submit">
+      Iniciar sesión
+    </button>
+
+    <div
+      class="error"
+      id="loginError"
+      role="alert">
+    </div>
+
   </form>
+
 </main>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
-const KEY="pisteros_user";
 
-if(sessionStorage.getItem(KEY)||localStorage.getItem(KEY)){
-  location.replace("menu.html");
+// ========================================
+// CONFIGURACIÓN
+// ========================================
+
+const API =
+"https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
+
+// Clave utilizada por el resto de páginas
+// para identificar al usuario conectado.
+
+const KEY = "pisteros_user";
+
+// Clave independiente para guardar
+// usuario y contraseña recordados.
+
+const REMEMBER_KEY = "pisteros_remembered_credentials";
+
+
+// ========================================
+// ELEMENTOS DEL FORMULARIO
+// ========================================
+
+const loginForm =
+  document.getElementById("loginForm");
+
+const usuarioInput =
+  document.getElementById("usuarioInput");
+
+const passwordInput =
+  document.getElementById("passwordInput");
+
+const rememberMe =
+  document.getElementById("rememberMe");
+
+const btnLogin =
+  document.getElementById("btnLogin");
+
+const loginError =
+  document.getElementById("loginError");
+
+
+// ========================================
+// CARGAR CREDENCIALES RECORDADAS
+// ========================================
+
+function cargarCredencialesRecordadas() {
+
+  try {
+
+    const guardadas =
+      localStorage.getItem(REMEMBER_KEY);
+
+    if (!guardadas) {
+
+      rememberMe.checked = false;
+      return;
+
+    }
+
+    const datos = JSON.parse(guardadas);
+
+    if (
+      typeof datos.usuario !== "string" ||
+      typeof datos.password !== "string"
+    ) {
+      localStorage.removeItem(REMEMBER_KEY);
+      return;
+    }
+
+    usuarioInput.value = datos.usuario;
+    passwordInput.value = datos.password;
+
+    rememberMe.checked = true;
+
+  } catch (error) {
+
+    console.error(
+      "Error al cargar credenciales:",
+      error
+    );
+
+    localStorage.removeItem(REMEMBER_KEY);
+
+  }
+
 }
 
-document.getElementById("loginForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const usuario=document.getElementById("usuarioInput").value.trim();
-  const password=document.getElementById("passwordInput").value;
-  const recordar=document.getElementById("rememberMe").checked;
-  const btn=document.getElementById("btnLogin");
-  const error=document.getElementById("loginError");
 
-  if(!usuario||!password){
-    error.textContent="Completa ambos campos.";
-    return;
+// ========================================
+// GUARDAR CREDENCIALES
+// ========================================
+
+function guardarCredenciales(usuario,password) {
+
+  const datos = {
+    usuario:usuario,
+    password:password
+  };
+
+  localStorage.setItem(
+    REMEMBER_KEY,
+    JSON.stringify(datos)
+  );
+
+}
+
+
+// ========================================
+// BORRAR CREDENCIALES
+// ========================================
+
+function borrarCredenciales() {
+
+  localStorage.removeItem(REMEMBER_KEY);
+
+}
+
+
+// ========================================
+// CAMBIOS EN LA CASILLA RECORDARME
+// ========================================
+
+rememberMe.addEventListener("change", () => {
+
+  if (!rememberMe.checked) {
+
+    // Eliminar inmediatamente los datos
+    // guardados si se desmarca la casilla.
+
+    borrarCredenciales();
+
   }
 
-  btn.disabled=true;
-  btn.textContent="Verificando...";
-  error.textContent="";
-
-  try{
-    const res=await fetch(API,{
-      method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({action:"login",usuario,password})
-    });
-    if(!res.ok)throw new Error("HTTP "+res.status);
-    const data=await res.json();
-
-    if(data.status==="success"&&data.authenticated){
-      localStorage.removeItem(KEY);
-      sessionStorage.removeItem(KEY);
-      const store=recordar?localStorage:sessionStorage;
-      store.setItem(KEY,data.user||usuario);
-      location.replace("menu.html");
-    }else{
-      error.textContent=data.message||"Usuario o contraseña incorrectos.";
-    }
-  }catch(err){
-    console.error(err);
-    error.textContent="Error de conexión. Inténtalo de nuevo.";
-  }finally{
-    btn.disabled=false;
-    btn.textContent="Iniciar sesión";
-  }
 });
+
+
+// ========================================
+// INICIALIZACIÓN
+// ========================================
+
+// Eliminar una posible sesión persistente
+// creada por la versión anterior de la web.
+// Esto NO borra las credenciales recordadas.
+
+localStorage.removeItem(KEY);
+
+// Rellenar los campos cuando corresponda.
+
+cargarCredencialesRecordadas();
+
+// No redirigimos automáticamente al menú.
+// Aunque existan credenciales guardadas,
+// siempre hay que pulsar Iniciar sesión.
+
+
+// ========================================
+// INICIAR SESIÓN
+// ========================================
+
+loginForm.addEventListener(
+  "submit",
+  async (e) => {
+
+    e.preventDefault();
+
+    const usuario =
+      usuarioInput.value.trim();
+
+    const password =
+      passwordInput.value;
+
+    const recordar =
+      rememberMe.checked;
+
+    if (!usuario || !password) {
+
+      loginError.textContent =
+        "Completa ambos campos.";
+
+      return;
+
+    }
+
+    btnLogin.disabled = true;
+    btnLogin.textContent = "Verificando...";
+    loginError.textContent = "";
+
+    try {
+
+      const res = await fetch(API, {
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body:JSON.stringify({
+          action:"login",
+          usuario:usuario,
+          password:password
+        })
+
+      });
+
+      if (!res.ok) {
+        throw new Error(
+          "HTTP " + res.status
+        );
+      }
+
+      const data = await res.json();
+
+      if (
+        data.status === "success" &&
+        data.authenticated
+      ) {
+
+        // ==================================
+        // GUARDAR O BORRAR CREDENCIALES
+        // ==================================
+
+        if (recordar) {
+
+          guardarCredenciales(
+            usuario,
+            password
+          );
+
+        } else {
+
+          borrarCredenciales();
+
+        }
+
+        // ==================================
+        // GUARDAR SESIÓN ACTUAL
+        // ==================================
+
+        // El resto de páginas de Pisteros
+        // siguen utilizando pisteros_user.
+        //
+        // La sesión se guarda únicamente
+        // en sessionStorage.
+
+        localStorage.removeItem(KEY);
+
+        sessionStorage.setItem(
+          KEY,
+          data.user || usuario
+        );
+
+        // ==================================
+        // ABRIR MENÚ
+        // ==================================
+
+        location.replace("menu.html");
+
+      } else {
+
+        loginError.textContent =
+          data.message ||
+          "Usuario o contraseña incorrectos.";
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      loginError.textContent =
+        "Error de conexión. Inténtalo de nuevo.";
+
+    } finally {
+
+      btnLogin.disabled = false;
+
+      btnLogin.textContent =
+        "Iniciar sesión";
+
+    }
+
+  }
+);
+
 </script>
+
 </body>
 </html>
