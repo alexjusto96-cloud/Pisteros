@@ -5,134 +5,523 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0038A8">
+
 <title>Rendimiento del Equipo - Pisteros F.C.</title>
+
 <link rel="icon" type="image/jpeg" href="pisteros-logo.jpg">
+
 <style>
-:root{--blue:#0038A8;--green:#5C7A4B;--gray:#F4F6F9}
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-body{background:var(--gray);color:#1F2937;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px}
-.app{width:100%;max-width:460px;background:white;border-radius:14px;padding:20px 16px;overflow:hidden;box-shadow:0 10px 25px #0038A81A}
-.bar{height:8px;background:linear-gradient(90deg,#5C7A4B,#7A9E66,#5C7A4B);margin:-20px -16px 16px}
-.header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--gray);padding-bottom:12px;margin-bottom:16px}
-.user{font-size:.9rem;font-weight:700;color:var(--blue)}
-.back{background:white;color:var(--blue);border:1.5px solid var(--blue);border-radius:6px;padding:6px 12px;font-weight:700;cursor:pointer}
-.selector{margin-bottom:16px}
-.selector label{display:block;color:var(--blue);font-size:.85rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
-.selector select{width:100%;padding:12px 14px;border:2px solid #D1D5DB;border-radius:10px;color:var(--blue);font-size:1rem;font-weight:700;background:#FAFAFA}
-.grid-header,.player-row{display:grid;grid-template-columns:50px minmax(0,1fr) 90px;gap:8px;align-items:center;padding:8px}
-.grid-header{background:var(--blue);color:white;border-radius:8px;font-size:.75rem;font-weight:700;text-transform:uppercase;text-align:center;margin-bottom:8px}
-.player-row{border-bottom:1px solid #E5E7EB;border-radius:6px;margin-bottom:4px}
-.player-row.media{background:#EAF2E8;border:1.5px solid var(--green);margin-top:8px;font-weight:700}
-.player-name{font-size:.9rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.player-photo{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid var(--green);display:block;margin:auto}
-.player-score{text-align:center;color:var(--blue);font-size:.95rem;font-weight:700}
-.loading{text-align:center;padding:40px;color:#6B7280;font-weight:600}
-.spinner{width:36px;height:36px;margin:0 auto 12px;border:4px solid #E5E7EB;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+:root {
+  --blue:#0038A8;
+  --green:#5C7A4B;
+  --gray:#F4F6F9;
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Roboto,Arial,sans-serif;
+}
+
+body {
+  background:var(--gray);
+  color:#1F2937;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+}
+
+.app {
+  width:100%;
+  max-width:460px;
+  background:white;
+  border-radius:14px;
+  padding:20px 16px;
+  overflow:hidden;
+  box-shadow:0 10px 25px #0038A81A;
+}
+
+.bar {
+  height:8px;
+  background:linear-gradient(
+    90deg,#5C7A4B,#7A9E66,#5C7A4B
+  );
+  margin:-20px -16px 16px;
+}
+
+.header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:2px solid var(--gray);
+  padding-bottom:12px;
+  margin-bottom:16px;
+}
+
+.user {
+  font-size:.9rem;
+  font-weight:700;
+  color:var(--blue);
+}
+
+.back {
+  background:white;
+  color:var(--blue);
+  border:1.5px solid var(--blue);
+  border-radius:6px;
+  padding:6px 12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.selector {
+  margin-bottom:16px;
+}
+
+.selector label {
+  display:block;
+  color:var(--blue);
+  font-size:.85rem;
+  font-weight:700;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.selector select {
+  width:100%;
+  padding:12px 14px;
+  border:2px solid #D1D5DB;
+  border-radius:10px;
+  color:var(--blue);
+  font-size:1rem;
+  font-weight:700;
+  background:#FAFAFA;
+}
+
+.grid-header,
+.player-row {
+  display:grid;
+  grid-template-columns:50px minmax(0,1fr) 90px;
+  gap:8px;
+  align-items:center;
+  padding:8px;
+}
+
+.grid-header {
+  background:var(--blue);
+  color:white;
+  border-radius:8px;
+  font-size:.75rem;
+  font-weight:700;
+  text-transform:uppercase;
+  text-align:center;
+  margin-bottom:8px;
+}
+
+.player-row {
+  border-bottom:1px solid #E5E7EB;
+  border-radius:6px;
+  margin-bottom:4px;
+}
+
+.player-row.media {
+  background:#EAF2E8;
+  border:1.5px solid var(--green);
+  margin-top:8px;
+  font-weight:700;
+}
+
+.player-name {
+  font-size:.9rem;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.player-photo {
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1.5px solid var(--green);
+  display:block;
+  margin:auto;
+}
+
+.player-score {
+  text-align:center;
+  color:var(--blue);
+  font-size:.95rem;
+  font-weight:700;
+}
+
+.loading {
+  text-align:center;
+  padding:40px;
+  color:#6B7280;
+  font-weight:600;
+}
+
+.spinner {
+  width:36px;
+  height:36px;
+  margin:0 auto 12px;
+  border:4px solid #E5E7EB;
+  border-top-color:var(--blue);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform:rotate(360deg);
+  }
+}
 </style>
 </head>
+
 <body>
+
 <main class="app">
-<div class="bar"></div>
-<div class="header">
-  <span class="user">Usuario: <span id="userNameDisplay">--</span></span>
-  <button class="back" onclick="location.href='menu.html'">← Menú</button>
-</div>
-<div class="selector">
-  <label for="jornadaSelector">Seleccionar Jornada</label>
-  <select id="jornadaSelector" onchange="cambiarJornada()"></select>
-</div>
-<div id="loading" class="loading"><div class="spinner"></div>Cargando rendimiento del equipo...</div>
-<div id="gridContainer" style="display:none">
-  <div class="grid-header"><span>Foto</span><span>Nombre</span><span>Valoración</span></div>
-  <div id="playersList"></div>
-</div>
-<div id="errorMsg" style="text-align:center;color:#DC2626;font-weight:600"></div>
+
+  <div class="bar"></div>
+
+  <div class="header">
+
+    <span class="user">
+      Usuario:
+      <span id="userNameDisplay">--</span>
+    </span>
+
+    <button
+      class="back"
+      onclick="location.href='menu.html'">
+      ← Menú
+    </button>
+
+  </div>
+
+  <div class="selector">
+
+    <label for="jornadaSelector">
+      Seleccionar Jornada
+    </label>
+
+    <select
+      id="jornadaSelector"
+      onchange="cambiarJornada()">
+    </select>
+
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    Cargando rendimiento del equipo...
+  </div>
+
+  <div id="gridContainer" style="display:none">
+
+    <div class="grid-header">
+      <span>Foto</span>
+      <span>Nombre</span>
+      <span>Valoración</span>
+    </div>
+
+    <div id="playersList"></div>
+
+  </div>
+
+  <div
+    id="errorMsg"
+    style="text-align:center;color:#DC2626;font-weight:600">
+  </div>
+
 </main>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
-const AVATAR="https://cdn-icons-png.flaticon.com/512/847/847969.png";
-const user=sessionStorage.getItem("pisteros_user")||localStorage.getItem("pisteros_user");
 
-if(!user)location.replace("index.html");
-else{
-  document.getElementById("userNameDisplay").textContent=user;
+// ========================================
+// CONFIGURACIÓN
+// ========================================
+
+const API =
+"https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
+
+const AVATAR = "pisteros-logo.jpg";
+
+const user =
+  sessionStorage.getItem("pisteros_user") ||
+  localStorage.getItem("pisteros_user");
+
+
+// ========================================
+// INICIALIZACIÓN
+// ========================================
+
+if (!user) {
+
+  location.replace("index.html");
+
+} else {
+
+  document.getElementById(
+    "userNameDisplay"
+  ).textContent = user;
+
   cargarDatosEquipo();
+
 }
 
-async function cargarDatosEquipo(jornada=""){
-  document.getElementById("loading").style.display="block";
-  document.getElementById("gridContainer").style.display="none";
-  document.getElementById("errorMsg").textContent="";
 
-  try{
-    const res=await fetch(API,{
+// ========================================
+// CARGAR DATOS DEL EQUIPO
+// ========================================
+
+async function cargarDatosEquipo(jornada = "") {
+
+  document.getElementById(
+    "loading"
+  ).style.display = "block";
+
+  document.getElementById(
+    "gridContainer"
+  ).style.display = "none";
+
+  document.getElementById(
+    "errorMsg"
+  ).textContent = "";
+
+  try {
+
+    const res = await fetch(API, {
+
       method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({action:"getDatosEquipo",jornada})
-    });
-    if(!res.ok)throw new Error("Error HTTP");
-    const data=await res.json();
-    if(data.status!=="success")throw new Error(data.message||"Error de datos");
 
-    const select=document.getElementById("jornadaSelector");
-    select.replaceChildren();
-    (data.jornadas||[]).forEach(j=>{
-      const opt=document.createElement("option");
-      opt.value=j;opt.textContent=j;
-      opt.selected=j===data.jornadaActiva;
-      select.appendChild(opt);
+      headers:{
+        "Content-Type":"text/plain;charset=utf-8"
+      },
+
+      body:JSON.stringify({
+        action:"getDatosEquipo",
+        jornada:jornada
+      })
+
     });
 
-    renderizarGridEquipo(data.jugadores||[]);
-    document.getElementById("gridContainer").style.display="block";
-  }catch(err){
-    console.error(err);
-    document.getElementById("errorMsg").textContent="No se pudieron cargar los datos del equipo.";
-  }finally{
-    document.getElementById("loading").style.display="none";
-  }
-}
-
-function renderizarGridEquipo(jugadores){
-  const list=document.getElementById("playersList");
-  list.replaceChildren();
-
-  jugadores.forEach((item,i)=>{
-    const esMedia=i===jugadores.length-1;
-    const row=document.createElement("div");
-    row.className=esMedia?"player-row media":"player-row";
-
-    const photoBox=document.createElement("div");
-    if(esMedia){
-      photoBox.textContent="📊";
-      photoBox.style.textAlign="center";
-    }else{
-      const img=document.createElement("img");
-      img.className="player-photo";
-      img.src=item.foto||AVATAR;
-      img.alt=item.nombre;
-      img.onerror=()=>{img.onerror=null;img.src=AVATAR};
-      photoBox.appendChild(img);
+    if (!res.ok) {
+      throw new Error(
+        "Error HTTP " + res.status
+      );
     }
 
-    const name=document.createElement("div");
-    name.className="player-name";
-    name.textContent=item.nombre;
+    const data = await res.json();
 
-    const score=document.createElement("div");
-    score.className="player-score";
-    score.textContent=item.valoracion!==""&&item.valoracion!=null?item.valoracion:"-";
+    if (data.status !== "success") {
+      throw new Error(
+        data.message || "Error de datos"
+      );
+    }
 
-    row.append(photoBox,name,score);
+
+    // SELECTOR DE JORNADAS
+
+    const select =
+      document.getElementById(
+        "jornadaSelector"
+      );
+
+    select.replaceChildren();
+
+    (data.jornadas || []).forEach(j => {
+
+      const opt =
+        document.createElement("option");
+
+      opt.value = j;
+      opt.textContent = j;
+
+      opt.selected =
+        j === data.jornadaActiva;
+
+      select.appendChild(opt);
+
+    });
+
+
+    // MOSTRAR JUGADORES
+
+    renderizarGridEquipo(
+      data.jugadores || []
+    );
+
+    document.getElementById(
+      "gridContainer"
+    ).style.display = "block";
+
+  } catch (err) {
+
+    console.error(err);
+
+    document.getElementById(
+      "errorMsg"
+    ).textContent =
+      "No se pudieron cargar los datos del equipo.";
+
+  } finally {
+
+    document.getElementById(
+      "loading"
+    ).style.display = "none";
+
+  }
+
+}
+
+
+// ========================================
+// RENDERIZAR EQUIPO
+// ========================================
+
+function renderizarGridEquipo(jugadores) {
+
+  const list =
+    document.getElementById("playersList");
+
+  list.replaceChildren();
+
+  jugadores.forEach((item, i) => {
+
+    const esMedia =
+      i === jugadores.length - 1;
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      esMedia
+        ? "player-row media"
+        : "player-row";
+
+
+    // ====================================
+    // FOTOGRAFÍA
+    // ====================================
+
+    const photoBox =
+      document.createElement("div");
+
+    if (esMedia) {
+
+      photoBox.textContent = "📊";
+      photoBox.style.textAlign = "center";
+
+    } else {
+
+      const img =
+        document.createElement("img");
+
+      img.className = "player-photo";
+
+      // Buscar la imagen en la carpeta
+      // jugadores de GitHub.
+      //
+      // Ejemplo:
+      // Juan Zan -> jugadores/Juan%20Zan.jpg
+
+      const nombreArchivo =
+        encodeURIComponent(item.nombre);
+
+      img.src =
+        "jugadores/" +
+        nombreArchivo +
+        ".jpg";
+
+      img.alt =
+        "Foto de " + item.nombre;
+
+      img.loading = "lazy";
+
+      // Si no existe la fotografía,
+      // mostrar el escudo del equipo.
+
+      img.onerror = function() {
+
+        this.onerror = null;
+        this.src = AVATAR;
+
+      };
+
+      photoBox.appendChild(img);
+
+    }
+
+
+    // ====================================
+    // NOMBRE
+    // ====================================
+
+    const name =
+      document.createElement("div");
+
+    name.className = "player-name";
+
+    name.textContent = item.nombre;
+
+
+    // ====================================
+    // VALORACIÓN
+    // ====================================
+
+    const score =
+      document.createElement("div");
+
+    score.className = "player-score";
+
+    score.textContent =
+      item.valoracion !== "" &&
+      item.valoracion != null
+        ? item.valoracion
+        : "-";
+
+
+    // ====================================
+    // CONSTRUIR FILA
+    // ====================================
+
+    row.append(
+      photoBox,
+      name,
+      score
+    );
+
     list.appendChild(row);
+
   });
+
 }
 
-function cambiarJornada(){
-  cargarDatosEquipo(document.getElementById("jornadaSelector").value);
+
+// ========================================
+// CAMBIAR JORNADA
+// ========================================
+
+function cambiarJornada() {
+
+  const jornada =
+    document.getElementById(
+      "jornadaSelector"
+    ).value;
+
+  cargarDatosEquipo(jornada);
+
 }
+
 </script>
+
 </body>
 </html>
