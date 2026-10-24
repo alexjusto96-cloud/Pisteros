@@ -2,190 +2,796 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0038A8">
-<title>Valorar Partido - Pisteros F.C.</title>
-<link rel="icon" type="image/jpeg" href="pisteros-logo.jpg">
-<style>
-:root{--blue:#0038A8;--dark:#002570;--green:#5C7A4B;--gray:#F4F6F9;--red:#DC2626}
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-body{background:var(--gray);color:#1F2937;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px}
-.app{width:100%;max-width:460px;background:white;border-radius:14px;padding:20px 16px;overflow:hidden;box-shadow:0 10px 25px #0038A81A}
-.bar{height:8px;background:linear-gradient(90deg,#5C7A4B,#7A9E66,#5C7A4B);margin:-20px -16px 16px}
-.header{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--gray);padding-bottom:12px;margin-bottom:16px}
-.user{font-size:.9rem;font-weight:700;color:var(--blue)}
-.back{border:1.5px solid var(--blue);background:white;color:var(--blue);padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer}
-h1{text-align:center;color:var(--blue);font-size:1.3rem;font-weight:800;text-transform:uppercase;margin-bottom:16px}
-.grid-header,.player-row{display:grid;grid-template-columns:50px minmax(0,1fr) 50px 100px;gap:6px;align-items:center;text-align:center}
-.grid-header{background:var(--blue);color:white;padding:8px 6px;border-radius:8px;font-size:.72rem;font-weight:700;text-transform:uppercase;margin-bottom:8px}
-.player-row{padding:8px 6px;border-bottom:1px solid #E5E7EB;border-radius:6px;margin-bottom:4px}
-.player-row.disabled{background:#F3F4F6;opacity:.5}
-.player-row input{width:20px;height:20px;accent-color:var(--blue)}
-.player-name{font-size:.88rem;font-weight:600;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.player-photo{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid var(--green)}
-.picker-select{width:100%;padding:8px 4px;border:1.5px solid #D1D5DB;border-radius:8px;background:#FAFAFA;color:var(--blue);font-size:.85rem;font-weight:700;text-align:center}
-.submit{width:100%;margin-top:20px;padding:16px;background:var(--blue);color:white;border:0;border-radius:10px;font-size:1rem;font-weight:700;text-transform:uppercase;cursor:pointer}
-.submit:disabled{background:#9CA3AF}
-.status{text-align:center;margin-top:12px;font-size:.85rem;font-weight:700;min-height:20px;color:var(--red)}
-.loading{text-align:center;padding:30px;color:#6B7280;font-weight:600}
-#successView{display:none;flex-direction:column;align-items:center;text-align:center;padding:40px 20px}
-.success-title{color:#10B981;font-size:1.3rem;font-weight:800;text-transform:uppercase;margin:16px 0 24px}
-.success-buttons{display:flex;flex-direction:column;gap:12px;width:100%;max-width:280px}
-.secondary{background:var(--green)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#0038A8">
+
+  <title>Valorar Partido - Pisteros F.C.</title>
+
+  <link rel="icon"
+        type="image/jpeg"
+        href="pisteros-logo.jpg">
+
+  <style>
+    :root {
+      --primary-blue: #0038A8;
+      --secondary-blue: #002570;
+      --olive-green: #5C7A4B;
+      --bg-gray: #F4F6F9;
+      --card-bg: #FFFFFF;
+      --text-main: #1F2937;
+      --text-muted: #6B7280;
+      --error-color: #DC2626;
+      --success-color: #10B981;
+      --border-radius: 14px;
+      --box-shadow:
+        0 10px 25px -5px rgba(0,56,168,.1),
+        0 8px 10px -6px rgba(0,0,0,.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-gray);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 460px;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      padding: 20px 16px;
+    }
+
+    .laurel-bar {
+      height: 8px;
+      background: linear-gradient(
+        90deg,
+        var(--olive-green),
+        #7A9E66,
+        var(--olive-green)
+      );
+      margin: -20px -16px 16px;
+    }
+
+    .header-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--bg-gray);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .user-welcome {
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+
+    .btn-back {
+      background: white;
+      border: 1.5px solid var(--primary-blue);
+      color: var(--primary-blue);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: .8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .page-title {
+      text-align: center;
+      color: var(--primary-blue);
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      letter-spacing: .5px;
+    }
+
+    .grid-header,
+    .player-row {
+      display: grid;
+      grid-template-columns:
+        48px minmax(0,1fr) 48px 100px;
+      gap: 6px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .grid-header {
+      background: var(--primary-blue);
+      color: white;
+      padding: 10px 6px;
+      border-radius: 8px;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .player-row {
+      padding: 8px 6px;
+      border-bottom: 1px solid #E5E7EB;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      transition: opacity .2s, background .2s;
+    }
+
+    .player-row.disabled {
+      background: #F3F4F6;
+      opacity: .5;
+    }
+
+    .player-row input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--primary-blue);
+      cursor: pointer;
+    }
+
+    .player-name {
+      font-size: .88rem;
+      font-weight: 600;
+      text-align: left;
+      overflow-wrap: anywhere;
+    }
+
+    .player-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--olive-green);
+      display: block;
+      margin: auto;
+      background: #F3F4F6;
+    }
+
+    .picker-select {
+      width: 100%;
+      padding: 9px 4px;
+      border: 1.5px solid #D1D5DB;
+      border-radius: 8px;
+      background: #FAFAFA;
+      color: var(--primary-blue);
+      font-size: .85rem;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .picker-select:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      margin-top: 20px;
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,56,168,.25);
+    }
+
+    .btn-submit:active {
+      transform: scale(.98);
+      background: var(--secondary-blue);
+    }
+
+    .btn-submit:disabled {
+      background: #9CA3AF;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .status-msg {
+      text-align: center;
+      margin-top: 14px;
+      font-size: .85rem;
+      font-weight: 600;
+      min-height: 20px;
+      color: var(--error-color);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 30px 10px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto 14px;
+      border: 4px solid #E5E7EB;
+      border-top-color: var(--primary-blue);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #successView {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .success-icon {
+      font-size: 3.5rem;
+    }
+
+    .success-title {
+      color: var(--success-color);
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 16px 0 24px;
+    }
+
+    .success-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .success-buttons .btn-submit {
+      margin-top: 0;
+    }
+
+    .btn-secondary {
+      background: var(--olive-green);
+    }
+  </style>
 </head>
+
 <body>
-<main class="app">
-<div class="bar"></div>
-<div class="header">
-  <span class="user">Usuario: <span id="userNameDisplay">--</span></span>
-  <button class="back" onclick="location.href='menu.html'">← Menú</button>
-</div>
 
-<section id="formContainerView">
-  <h1 id="jornadaTitle">Cargando...</h1>
-  <div id="loading" class="loading">Obteniendo plantilla de jugadores...</div>
-  <div id="gridContainer" style="display:none">
-    <div class="grid-header">
-      <span>Conv.</span><span>Jugador</span><span>Foto</span><span>Valoración</span>
+  <main class="app-container">
+
+    <div class="laurel-bar"></div>
+
+    <div class="header-nav">
+      <span class="user-welcome">
+        Usuario:
+        <span id="userNameDisplay">--</span>
+      </span>
+
+      <button
+        class="btn-back"
+        onclick="window.location.href='menu.html'">
+        ← Menú
+      </button>
     </div>
-    <div id="playersList"></div>
-    <button id="btnEnviar" class="submit" onclick="enviarPuntuaciones()">Enviar Puntuaciones</button>
-    <div id="statusMsg" class="status" role="alert"></div>
-  </div>
-</section>
 
-<section id="successView">
-  <div style="font-size:3.5rem">✅</div>
-  <h2 class="success-title">¡Valoraciones enviadas!</h2>
-  <div class="success-buttons">
-    <button class="submit" onclick="location.href='menu.html'">Volver al menú</button>
-    <button class="submit secondary" onclick="location.reload()">Nueva valoración</button>
-  </div>
-</section>
-</main>
+    <section id="formContainerView">
 
-<script>
-const API="https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
-const AVATAR="https://cdn-icons-png.flaticon.com/512/847/847969.png";
-const user=sessionStorage.getItem("pisteros_user")||localStorage.getItem("pisteros_user");
-let jugadoresActuales=[];
+      <h1 class="page-title" id="jornadaTitle">
+        Cargando...
+      </h1>
 
-if(!user)location.replace("index.html");
-else{
-  document.getElementById("userNameDisplay").textContent=user;
-  cargarDatosFormulario();
-}
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        Obteniendo plantilla de jugadores...
+      </div>
 
-async function peticion(datos){
-  const r=await fetch(API,{
-    method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify(datos)
-  });
-  if(!r.ok)throw new Error("HTTP "+r.status);
-  return r.json();
-}
+      <div id="gridContainer" style="display:none">
 
-async function cargarDatosFormulario(){
-  try{
-    const data=await peticion({action:"getDatosValoracion"});
-    if(data.status!=="success")throw new Error(data.message||"Error");
-    document.getElementById("jornadaTitle").textContent=data.jornadaTitle||"Valorar Partido";
-    renderizarGrid(data.jugadores||[]);
-  }catch(err){
-    console.error(err);
-    document.getElementById("jornadaTitle").textContent="Error al cargar";
-    document.getElementById("statusMsg").textContent="No se han podido obtener los jugadores.";
-  }finally{
-    document.getElementById("loading").style.display="none";
-    document.getElementById("gridContainer").style.display="block";
-  }
-}
+        <div class="grid-header">
+          <span>Conv.</span>
+          <span>Jugador</span>
+          <span>Foto</span>
+          <span>Valoración</span>
+        </div>
 
-function renderizarGrid(jugadores){
-  jugadoresActuales=jugadores;
-  const list=document.getElementById("playersList");
-  list.replaceChildren();
+        <div id="playersList"></div>
 
-  jugadores.forEach((jugador,i)=>{
-    const row=document.createElement("div");
-    row.className="player-row";
-    row.id="row-"+i;
+        <button
+          type="button"
+          id="btnEnviar"
+          class="btn-submit"
+          onclick="enviarPuntuaciones()">
+          Enviar Puntuaciones
+        </button>
 
-    const checkBox=document.createElement("div");
-    const check=document.createElement("input");
-    check.type="checkbox";
-    check.checked=true;
-    check.id="check-"+i;
-    check.addEventListener("change",()=>toggleFila(i));
-    checkBox.appendChild(check);
+        <div
+          id="statusMsg"
+          class="status-msg"
+          role="alert">
+        </div>
 
-    const name=document.createElement("div");
-    name.className="player-name";
-    name.textContent=jugador.nombre;
+      </div>
+    </section>
 
-    const photoBox=document.createElement("div");
-    const img=document.createElement("img");
-    img.className="player-photo";
-    img.src=jugador.foto||AVATAR;
-    img.alt=jugador.nombre;
-    img.onerror=()=>{img.onerror=null;img.src=AVATAR};
-    photoBox.appendChild(img);
+    <section id="successView">
 
-    const scoreBox=document.createElement("div");
-    const select=document.createElement("select");
-    select.id="select-"+i;
-    select.className="picker-select";
-    [["","--"],["-","-"],["1","♠"],["2","♠♠"],["3","♠♠♠"]].forEach(([v,t])=>{
-      const opt=document.createElement("option");
-      opt.value=v;opt.textContent=t;select.appendChild(opt);
-    });
-    scoreBox.appendChild(select);
+      <div class="success-icon">✅</div>
 
-    row.append(checkBox,name,photoBox,scoreBox);
-    list.appendChild(row);
-  });
-}
+      <h2 class="success-title">
+        ¡Valoraciones enviadas!
+      </h2>
 
-function toggleFila(i){
-  const checked=document.getElementById("check-"+i).checked;
-  const row=document.getElementById("row-"+i);
-  const select=document.getElementById("select-"+i);
-  row.classList.toggle("disabled",!checked);
-  select.disabled=!checked;
-  if(!checked)select.value="";
-}
+      <div class="success-buttons">
 
-async function enviarPuntuaciones(){
-  const btn=document.getElementById("btnEnviar");
-  const status=document.getElementById("statusMsg");
-  const valoraciones={};
+        <button
+          class="btn-submit"
+          onclick="location.href='menu.html'">
+          Volver al menú
+        </button>
 
-  jugadoresActuales.forEach((jugador,i)=>{
-    const checked=document.getElementById("check-"+i).checked;
-    const select=document.getElementById("select-"+i);
-    valoraciones[jugador.nombre]=checked?select.value:"";
-  });
+        <button
+          class="btn-submit btn-secondary"
+          onclick="location.reload()">
+          Nueva valoración
+        </button>
 
-  btn.disabled=true;
-  btn.textContent="Enviando...";
-  status.textContent="";
+      </div>
+    </section>
+  </main>
 
-  try{
-    const data=await peticion({action:"guardarValoracion",valoraciones});
-    if(data.status!=="success")throw new Error(data.message||"Error al guardar");
-    document.getElementById("formContainerView").style.display="none";
-    document.getElementById("successView").style.display="flex";
-  }catch(err){
-    console.error(err);
-    status.textContent=err.message||"Error de conexión al enviar.";
-  }finally{
-    btn.disabled=false;
-    btn.textContent="Enviar Puntuaciones";
-  }
-}
-</script>
+  <script>
+
+    // =========================================
+    // CONFIGURACIÓN
+    // =========================================
+
+    const APPS_SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbzyIwS_zvaVUUwaVQkiDFKwPPOIV8EEOe5wWQIRBb_j0WfcO_nnqKMpzp4enFrxlPpc1Q/exec";
+
+    const DEFAULT_AVATAR =
+      "pisteros-logo.jpg";
+
+    let currentUser = "";
+    let jugadoresActuales = [];
+    let enviando = false;
+
+
+    // =========================================
+    // INICIALIZACIÓN
+    // =========================================
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        currentUser =
+          sessionStorage.getItem("pisteros_user") ||
+          localStorage.getItem("pisteros_user");
+
+        if (!currentUser) {
+          location.replace("index.html");
+          return;
+        }
+
+        document.getElementById(
+          "userNameDisplay"
+        ).textContent = currentUser;
+
+        cargarDatosFormulario();
+
+      }
+    );
+
+
+    // =========================================
+    // PETICIÓN A GOOGLE APPS SCRIPT
+    // =========================================
+
+    async function peticionAppsScript(datos) {
+
+      const response = await fetch(
+        APPS_SCRIPT_URL,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(datos)
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "Error HTTP " + response.status
+        );
+      }
+
+      return response.json();
+    }
+
+
+    // =========================================
+    // CARGAR JUGADORES
+    // =========================================
+
+    async function cargarDatosFormulario() {
+
+      const loading =
+        document.getElementById("loading");
+
+      const grid =
+        document.getElementById("gridContainer");
+
+      const status =
+        document.getElementById("statusMsg");
+
+      loading.style.display = "block";
+      grid.style.display = "none";
+      status.textContent = "";
+
+      try {
+
+        const data = await peticionAppsScript({
+          action: "getDatosValoracion"
+        });
+
+        if (data.status !== "success") {
+          throw new Error(
+            data.message ||
+            "No se pudieron cargar los datos."
+          );
+        }
+
+        document.getElementById(
+          "jornadaTitle"
+        ).textContent =
+          data.jornadaTitle || "Valorar Partido";
+
+        renderizarJugadores(
+          data.jugadores || []
+        );
+
+        grid.style.display = "block";
+
+      } catch (error) {
+
+        console.error(error);
+
+        document.getElementById(
+          "jornadaTitle"
+        ).textContent = "Error al cargar";
+
+        status.textContent =
+          "No se han podido obtener los jugadores.";
+
+        grid.style.display = "block";
+
+        document.getElementById(
+          "btnEnviar"
+        ).disabled = true;
+
+      } finally {
+
+        loading.style.display = "none";
+
+      }
+    }
+
+
+    // =========================================
+    // CREAR FILAS DE JUGADORES
+    // =========================================
+
+    function renderizarJugadores(jugadores) {
+
+      jugadoresActuales = jugadores;
+
+      const lista =
+        document.getElementById("playersList");
+
+      lista.replaceChildren();
+
+      jugadores.forEach((jugador, index) => {
+
+        const fila =
+          document.createElement("div");
+
+        fila.className = "player-row";
+        fila.id = "row-" + index;
+
+
+        // CONVOCATORIA
+
+        const celdaConvocado =
+          document.createElement("div");
+
+        const checkbox =
+          document.createElement("input");
+
+        checkbox.type = "checkbox";
+        checkbox.id = "check-" + index;
+        checkbox.checked = true;
+
+        checkbox.setAttribute(
+          "aria-label",
+          "Convocado: " + jugador.nombre
+        );
+
+        checkbox.addEventListener(
+          "change",
+          () => toggleFila(index)
+        );
+
+        celdaConvocado.appendChild(checkbox);
+
+
+        // NOMBRE
+
+        const celdaNombre =
+          document.createElement("div");
+
+        celdaNombre.className = "player-name";
+        celdaNombre.textContent = jugador.nombre;
+
+
+        // FOTO DESDE GITHUB
+
+        const celdaFoto =
+          document.createElement("div");
+
+        const imagen =
+          document.createElement("img");
+
+        imagen.className = "player-photo";
+        imagen.alt = "Foto de " + jugador.nombre;
+        imagen.loading = "lazy";
+
+        const nombreArchivo =
+          encodeURIComponent(jugador.nombre);
+
+        imagen.src =
+          "jugadores/" + nombreArchivo + ".jpg";
+
+        imagen.onerror = function() {
+          this.onerror = null;
+          this.src = DEFAULT_AVATAR;
+        };
+
+        celdaFoto.appendChild(imagen);
+
+
+        // VALORACIÓN
+
+        const celdaValoracion =
+          document.createElement("div");
+
+        const select =
+          document.createElement("select");
+
+        select.id = "select-" + index;
+        select.className = "picker-select";
+
+        select.setAttribute(
+          "aria-label",
+          "Valoración de " + jugador.nombre
+        );
+
+        const opciones = [
+          ["", "--"],
+          ["-", "-"],
+          ["1", "♠"],
+          ["2", "♠♠"],
+          ["3", "♠♠♠"]
+        ];
+
+        opciones.forEach(opcion => {
+
+          const elemento =
+            document.createElement("option");
+
+          elemento.value = opcion[0];
+          elemento.textContent = opcion[1];
+
+          select.appendChild(elemento);
+
+        });
+
+        celdaValoracion.appendChild(select);
+
+
+        // CONSTRUIR FILA
+
+        fila.appendChild(celdaConvocado);
+        fila.appendChild(celdaNombre);
+        fila.appendChild(celdaFoto);
+        fila.appendChild(celdaValoracion);
+
+        lista.appendChild(fila);
+
+      });
+    }
+
+
+    // =========================================
+    // CONVOCATORIA
+    // =========================================
+
+    function toggleFila(index) {
+
+      const checkbox =
+        document.getElementById(
+          "check-" + index
+        );
+
+      const fila =
+        document.getElementById(
+          "row-" + index
+        );
+
+      const select =
+        document.getElementById(
+          "select-" + index
+        );
+
+      const convocado = checkbox.checked;
+
+      fila.classList.toggle(
+        "disabled",
+        !convocado
+      );
+
+      select.disabled = !convocado;
+
+      if (!convocado) {
+        select.value = "";
+      }
+    }
+
+
+    // =========================================
+    // ENVIAR PUNTUACIONES
+    // =========================================
+
+    async function enviarPuntuaciones() {
+
+      if (enviando) return;
+
+      const boton =
+        document.getElementById("btnEnviar");
+
+      const status =
+        document.getElementById("statusMsg");
+
+      status.textContent = "";
+
+      const valoraciones = {};
+
+      let numeroConvocados = 0;
+      let numeroValorados = 0;
+
+      jugadoresActuales.forEach(
+        (jugador, index) => {
+
+          const convocado =
+            document.getElementById(
+              "check-" + index
+            ).checked;
+
+          const puntuacion =
+            document.getElementById(
+              "select-" + index
+            ).value;
+
+          if (convocado) {
+            numeroConvocados++;
+
+            if (puntuacion !== "") {
+              numeroValorados++;
+            }
+          }
+
+          valoraciones[jugador.nombre] =
+            convocado ? puntuacion : "";
+
+        }
+      );
+
+
+      // VALIDACIONES
+
+      if (numeroConvocados === 0) {
+        status.textContent =
+          "Selecciona al menos un convocado.";
+        return;
+      }
+
+      if (numeroValorados < numeroConvocados) {
+        status.textContent =
+          "Debes valorar a todos los convocados.";
+        return;
+      }
+
+
+      // ENVIAR
+
+      enviando = true;
+      boton.disabled = true;
+      boton.textContent = "Enviando...";
+
+      try {
+
+        const data =
+          await peticionAppsScript({
+
+            action: "guardarValoracion",
+            usuario: currentUser,
+            valoraciones: valoraciones
+
+          });
+
+        if (data.status !== "success") {
+          throw new Error(
+            data.message ||
+            "No se pudieron guardar las valoraciones."
+          );
+        }
+
+        document.getElementById(
+          "formContainerView"
+        ).style.display = "none";
+
+        document.getElementById(
+          "successView"
+        ).style.display = "flex";
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.textContent =
+          error.message ||
+          "Error de conexión al enviar.";
+
+      } finally {
+
+        enviando = false;
+        boton.disabled = false;
+        boton.textContent =
+          "Enviar Puntuaciones";
+
+      }
+    }
+
+  </script>
 </body>
 </html>
